@@ -6,7 +6,18 @@ import axios from "axios";
 
 const TaksState = (props) => {
   const initialState = {
-    tasks: [{ name: "Clean the house" }],
+    tasks: [
+      {
+        name: "Clean the house",
+        description: "TF you want? It's self explanatory",
+        id: 123456789,
+      },
+      {
+        name: "Do your homework",
+        description: "Maths and physics are urgent",
+        id: 2468101214,
+      },
+    ],
   };
 
   const [state, dispatch] = useReducer(TasksReducer, initialState);

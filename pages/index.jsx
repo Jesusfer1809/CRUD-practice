@@ -4,6 +4,7 @@ import { useContext } from "react";
 
 import TasksContext from "../context/Tasks/TasksContext";
 import Layout from "../components/Layout";
+import TaskComponent from "../components/TaskComponent";
 
 const Home = () => {
   const { tasks } = useContext(TasksContext);
@@ -17,7 +18,13 @@ const Home = () => {
       </Head>
 
       <Layout isInIndex={true}>
-        <div className="flex-grow">uwu</div>
+        <div className="flex-grow py-12">
+          <div className="w-full px-4  flex flex-col space-y-8">
+            {tasks.map((task, index) => (
+              <TaskComponent task={task} index={index} />
+            ))}
+          </div>
+        </div>
       </Layout>
     </div>
   );
