@@ -1,17 +1,37 @@
+import { v4 as uuidv4 } from "uuid";
+import { trimDate } from "../../utils/functions";
+
 export default (state, action) => {
   const { payload, type } = action;
 
-  // switch (type) {
-  //   case ADD_TO_CART:
-  //     const newProducts = state.products.map((p) =>
-  //       payload.name === p.name ? { ...p, isInCart: true } : p
-  //     );
-  //     return { ...state, products: newProducts };
+  switch (type) {
+    case "ADD_TASK":
+      return {
+        ...state,
+        tasks: [
+          ...state.tasks,
+          { ...payload, id: uuidv4(), createdAt: trimDate(Date.now()) },
+        ],
+      };
 
-  //   case DELETE_FROM_CART:
-  //     return { ...state, selectedUser: payload };
+    case "UPDATE_TASK":
+      return {
+        ...state,
+        tasks: state.tasks.map((task) =>
+          task.id === payload.id ? payload.newTask : task
+        ),
+      };
 
-  //   default:
-  //     return state;
-  // }
+    case "DELETE_TASK":
+      return {
+        ...state,
+        tasks: state.tasks.filter((task) => task.id !== payload),
+      };
+
+    // case DELETE_FROM_CART:
+    //   return { ...state, selectedUser: payload };
+
+    default:
+      return state;
+  }
 };

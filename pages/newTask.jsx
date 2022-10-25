@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+
+import toast, { Toaster } from "react-hot-toast";
+import "react-toastify/dist/ReactToastify.css";
+
 import Head from "next/head";
-import { useContext } from "react";
-
-import TasksContext from "../context/Tasks/TasksContext";
-
 import Layout from "../components/Layout";
+import TaskEditor from "../components/TaskEditor";
 
 function newTask() {
   return (
@@ -15,8 +16,12 @@ function newTask() {
       </Head>
 
       <Layout isInIndex={false}>
-        <div className="flex-grow">uwu</div>
+        <div className="flex-grow w-full py-12">
+          <TaskEditor />
+        </div>
       </Layout>
+
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 }

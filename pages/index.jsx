@@ -1,15 +1,17 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import TasksContext from "../context/Tasks/TasksContext";
 import Layout from "../components/Layout";
 import TaskComponent from "../components/TaskComponent";
 
+import toast, { Toaster } from "react-hot-toast";
+import "react-toastify/dist/ReactToastify.css";
+
 const Home = () => {
   const { tasks } = useContext(TasksContext);
 
-  console.log(tasks);
   return (
     <div className="bg-gray-800">
       <Head>
@@ -20,12 +22,17 @@ const Home = () => {
       <Layout isInIndex={true}>
         <div className="flex-grow py-12">
           <div className="w-full px-4  flex flex-col space-y-8">
-            {tasks.map((task, index) => (
-              <TaskComponent task={task} index={index} />
-            ))}
+            {tasks.length > 0 ? (
+              tasks.map((task, index) => (
+                <TaskComponent task={task} index={index + 1} />
+              ))
+            ) : (
+              <h2 className="text-2xl">You don't have any tasks!!</h2>
+            )}
           </div>
         </div>
       </Layout>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };
