@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useContext } from "react";
 import TasksContext from "../context/Tasks/TasksContext";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 function TaskEditor({ isEditing, prevTask }) {
   const { createTask, updateTask } = useContext(TasksContext);
@@ -53,10 +54,18 @@ function TaskEditor({ isEditing, prevTask }) {
     router.push("/");
   };
   return (
-    <div className="px-4">
-      <h2 className="text-xl font-medium block">
-        {isEditing ? "Edit Task" : "New Task"}
-      </h2>
+    <>
+      <div className="flex justify-between">
+        <h2 className="text-xl font-medium block">
+          {isEditing ? "Edit Task" : "New Task"}
+        </h2>
+
+        <Link href="/" className="block">
+          <span className=" inline-block  text-blue-300 border-b border-b-blue-300 cursor-pointer">
+            &larr; Back
+          </span>
+        </Link>
+      </div>
       <form
         action="#"
         onSubmit={handleSubmit}
@@ -97,7 +106,7 @@ function TaskEditor({ isEditing, prevTask }) {
           Save
         </button>
       </form>
-    </div>
+    </>
   );
 }
 

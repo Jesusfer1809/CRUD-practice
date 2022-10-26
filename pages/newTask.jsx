@@ -16,9 +16,7 @@ function newTask() {
       </Head>
 
       <Layout isInIndex={false}>
-        <div className="flex-grow w-full py-12">
-          <TaskEditor />
-        </div>
+        <TaskEditor />
       </Layout>
 
       <Toaster position="top-right" reverseOrder={false} />

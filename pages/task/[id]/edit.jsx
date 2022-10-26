@@ -18,9 +18,7 @@ function TaskEdit({ id }) {
       </Head>
 
       <Layout isInIndex={false}>
-        <div className="flex-grow w-full py-12">
-          <TaskEditor isEditing prevTask={task} />
-        </div>
+        <TaskEditor isEditing prevTask={task} />
       </Layout>
 
       <Toaster position="top-right" reverseOrder={false} />

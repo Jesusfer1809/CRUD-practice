@@ -21,7 +21,7 @@ function TaskComponent({ task, index }) {
 
   return (
     <Link href={`/task/${task.id}`} passHref>
-      <div className="bg-gray-900 bg-opacity-50 px-4 py-4 flex justify-between space-x-8 rounded-md">
+      <div className="bg-gray-900 bg-opacity-50 px-4 py-4 flex justify-between space-x-8 rounded-md cursor-pointer">
         <div className="flex items-center text-2xl">{index}</div>
         <div className="flex-grow flex flex-col space-y-5">
           <div className="flex justify-between items-center flex-wrap">

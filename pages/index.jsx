@@ -20,16 +20,14 @@ const Home = () => {
       </Head>
 
       <Layout isInIndex={true}>
-        <div className="flex-grow py-12">
-          <div className="w-full px-4  flex flex-col space-y-8">
-            {tasks.length > 0 ? (
-              tasks.map((task, index) => (
-                <TaskComponent task={task} index={index + 1} />
-              ))
-            ) : (
-              <h2 className="text-2xl">You don't have any tasks!!</h2>
-            )}
-          </div>
+        <div className="flex flex-col space-y-8">
+          {tasks.length > 0 ? (
+            tasks.map((task, index) => (
+              <TaskComponent task={task} index={index + 1} />
+            ))
+          ) : (
+            <h2 className="text-2xl">You don't have any tasks!!</h2>
+          )}
         </div>
       </Layout>
       <Toaster position="top-right" reverseOrder={false} />

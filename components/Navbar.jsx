@@ -10,7 +10,7 @@ function Navbar({ isInIndex }) {
       <div>
         <Link href="/">
           <a>
-            <h1 className="font-medium py-2">Task Manager ⏲</h1>
+            <h1 className="font-medium py-2 md:text-lg">Task Manager ⏲</h1>
           </a>
         </Link>
       </div>
@@ -19,7 +19,7 @@ function Navbar({ isInIndex }) {
         <div>
           <button
             onClick={() => router.push("/newTask")}
-            className="flex items-center space-x-2 bg-teal-500 px-3 py-2 rounded-md font-medium"
+            className="flex items-center space-x-2 bg-teal-500 px-2 py-2 rounded-md font-medium"
           >
             <AiOutlinePlus />
             <span>New Task</span>
