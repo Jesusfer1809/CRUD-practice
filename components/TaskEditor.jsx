@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import toast, { Toaster } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
@@ -6,14 +6,18 @@ import { useContext } from "react";
 import TasksContext from "../context/Tasks/TasksContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { v4 as uuidv4 } from "uuid";
+import { trimDate } from "../utils/functions";
 
 function TaskEditor({ isEditing, prevTask }) {
-  const { createTask, updateTask } = useContext(TasksContext);
+  const { createTask, updateTask, tasks } = useContext(TasksContext);
   const router = useRouter();
 
-  const [task, setTask] = useState(
-    isEditing ? prevTask : { title: "", description: "" }
-  );
+  const [task, setTask] = useState({ title: "", description: "" });
+
+  useEffect(() => {
+    if (isEditing) setTask(prevTask);
+  }, [prevTask]);
 
   const handleChange = (e) => {
     setTask({ ...task, [e.target.name]: e.target.value });
@@ -22,7 +26,7 @@ function TaskEditor({ isEditing, prevTask }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (task.title === "")
+    if (task.title.trim() === "")
       return toast.error("Task must have a title.", {
         style: {
           borderRadius: "2px",
@@ -32,7 +36,7 @@ function TaskEditor({ isEditing, prevTask }) {
       });
 
     if (!isEditing) {
-      createTask(task);
+      createTask([{ ...task, id: uuidv4(), createdAt: trimDate(Date.now()) }]);
       toast.success("New task created!!", {
         style: {
           borderRadius: "2px",
@@ -53,6 +57,7 @@ function TaskEditor({ isEditing, prevTask }) {
 
     router.push("/");
   };
+
   return (
     <>
       <div className="flex justify-between">

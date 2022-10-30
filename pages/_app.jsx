@@ -1,9 +1,11 @@
 import "../styles/globals.css";
-import type { AppProps } from "next/app";
+
+import { useContext, useEffect } from "react";
+import TasksContext from "../context/Tasks/TasksContext";
 
 import TasksState from "../context/Tasks/TasksState";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }) {
   return (
     <TasksState>
       <Component {...pageProps} />

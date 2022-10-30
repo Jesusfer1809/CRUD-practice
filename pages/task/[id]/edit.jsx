@@ -8,7 +8,12 @@ import TasksContext from "../../../context/Tasks/TasksContext";
 function TaskEdit({ id }) {
   const { getTask, tasks } = useContext(TasksContext);
 
-  const [task, setTask] = useState(getTask(id));
+  const [task, setTask] = useState(null);
+
+  useEffect(() => {
+    const requiredTask = getTask(id);
+    setTask(requiredTask);
+  }, [tasks]);
 
   return (
     <div className="bg-gray-800">

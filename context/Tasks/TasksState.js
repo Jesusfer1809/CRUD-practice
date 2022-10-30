@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import TasksReducer from "./TasksReducer";
 import TasksContext from "./TasksContext";
 
@@ -8,23 +8,18 @@ import axios from "axios";
 
 const TaksState = (props) => {
   const initialState = {
-    tasks: [
-      {
-        title: "Clean the house",
-        description: "TF you want? It's self explanatory",
-        id: "123456789",
-        createdAt: trimDate(Date.now()),
-      },
-      {
-        title: "Do your homework",
-        description: "Maths and physics are urgent",
-        id: "2468101214",
-        createdAt: trimDate(Date.now()),
-      },
-    ],
+    tasks: [],
   };
-
   const [state, dispatch] = useReducer(TasksReducer, initialState);
+
+  useEffect(() => {
+    const tasksLC = JSON.parse(localStorage.getItem("tasks"));
+    if (tasksLC) dispatch({ type: "ADD_TASK", payload: tasksLC });
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(state.tasks));
+  }, [state.tasks]);
 
   const createTask = (task) => {
     dispatch({

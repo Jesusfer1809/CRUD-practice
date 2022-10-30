@@ -8,10 +8,7 @@ export default (state, action) => {
     case "ADD_TASK":
       return {
         ...state,
-        tasks: [
-          ...state.tasks,
-          { ...payload, id: uuidv4(), createdAt: trimDate(Date.now()) },
-        ],
+        tasks: [...state.tasks, ...payload],
       };
 
     case "UPDATE_TASK":

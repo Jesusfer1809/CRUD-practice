@@ -15,7 +15,7 @@ function TaskShowcase({ id }) {
   useEffect(() => {
     const requiredTask = getTask(id);
     setTask(requiredTask);
-  }, []);
+  }, [tasks]);
 
   return (
     <div className="bg-gray-800">
