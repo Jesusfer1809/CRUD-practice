@@ -1,26 +1,14 @@
-import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useContext } from "react";
-import toast from "react-hot-toast";
-import { BsTrash } from "react-icons/bs";
-import TasksContext from "../context/Tasks/TasksContext";
 
-function TaskComponent({ task, index }) {
-  const router = useRouter();
+import React from "react";
+
+import { BsTrash } from "react-icons/bs";
+
+function TaskComponent({ task, index, setModal }) {
   const handleDelete = async (e) => {
     e.stopPropagation();
-    await axios.delete(`http://localhost:3000/api/tasks/${task._id}`);
 
-    toast.success("Task deleted", {
-      style: {
-        borderRadius: "2px",
-        background: "#333",
-        color: "#fff",
-      },
-    });
-
-    router.push("/");
+    setModal({ id: task._id, isOpened: true });
   };
 
   return (
