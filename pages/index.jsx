@@ -8,10 +8,9 @@ import TaskComponent from "../components/TaskComponent";
 
 import toast, { Toaster } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
-const Home = () => {
-  const { tasks } = useContext(TasksContext);
-
+const Home = ({ tasks }) => {
   return (
     <div className="bg-gray-800">
       <Head>
@@ -36,3 +35,13 @@ const Home = () => {
 };
 
 export default Home;
+
+export async function getServerSideProps() {
+  const res = await axios.get(`${process.env.BASE_URL}/api/tasks`);
+
+  return {
+    props: {
+      tasks: res.data.data.tasks,
+    },
+  };
+}

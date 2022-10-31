@@ -6,8 +6,7 @@ import { useContext } from "react";
 import TasksContext from "../context/Tasks/TasksContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { v4 as uuidv4 } from "uuid";
-import { trimDate } from "../utils/functions";
+import axios from "axios";
 
 function TaskEditor({ isEditing, prevTask }) {
   const { createTask, updateTask, tasks } = useContext(TasksContext);
@@ -23,7 +22,7 @@ function TaskEditor({ isEditing, prevTask }) {
     setTask({ ...task, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (task.title.trim() === "")
@@ -36,7 +35,7 @@ function TaskEditor({ isEditing, prevTask }) {
       });
 
     if (!isEditing) {
-      createTask([{ ...task, id: uuidv4(), createdAt: trimDate(Date.now()) }]);
+      await axios.post(`http://localhost:3000/api/tasks`, task);
       toast.success("New task created!!", {
         style: {
           borderRadius: "2px",
@@ -45,7 +44,7 @@ function TaskEditor({ isEditing, prevTask }) {
         },
       });
     } else {
-      updateTask(task.id, task);
+      await axios.patch(`http://localhost:3000/api/tasks/${task._id}`, task);
       toast.success("Task updated!!", {
         style: {
           borderRadius: "2px",
