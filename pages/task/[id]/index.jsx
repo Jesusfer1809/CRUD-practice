@@ -1,9 +1,9 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
+
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../../components/Layout";
 import TasksContext from "../../../context/Tasks/TasksContext";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 

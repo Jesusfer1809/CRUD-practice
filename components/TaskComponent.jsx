@@ -1,22 +1,12 @@
 import Link from "next/link";
-import React, { useContext } from "react";
-import toast from "react-hot-toast";
+import React from "react";
+
 import { BsTrash } from "react-icons/bs";
-import TasksContext from "../context/Tasks/TasksContext";
 
-function TaskComponent({ task, index }) {
-  const { deleteTask } = useContext(TasksContext);
-
+function TaskComponent({ task, index, setModal }) {
   const handleDelete = (e) => {
     e.stopPropagation();
-    deleteTask(task.id);
-    toast.success("Task deleted", {
-      style: {
-        borderRadius: "2px",
-        background: "#333",
-        color: "#fff",
-      },
-    });
+    setModal({ id: task.id, isOpened: true });
   };
 
   return (
@@ -26,9 +16,12 @@ function TaskComponent({ task, index }) {
         <div className="flex-grow flex flex-col space-y-5">
           <div className="flex justify-between items-center flex-wrap">
             <span className="text-lg font-medium mr-4 mb-3">{task.title}</span>
-            <button className="bg-red-600 px-4 py-1 flex items-center space-x-1 rounded-sm">
+            <button
+              onClick={handleDelete}
+              className="bg-red-600 px-4 py-1 flex items-center space-x-1 rounded-sm"
+            >
               <BsTrash />
-              <span onClick={handleDelete}>Delete</span>
+              <span>Delete</span>
             </button>
           </div>
           <div>
