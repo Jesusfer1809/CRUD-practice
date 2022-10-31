@@ -1,3 +1,4 @@
+import axios from "axios";
 import Head from "next/head";
 import React, { useContext, useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
@@ -5,16 +6,7 @@ import Layout from "../../../components/Layout";
 import TaskEditor from "../../../components/TaskEditor";
 import TasksContext from "../../../context/Tasks/TasksContext";
 
-function TaskEdit({ id }) {
-  const { getTask, tasks } = useContext(TasksContext);
-
-  const [task, setTask] = useState(null);
-
-  useEffect(() => {
-    const requiredTask = getTask(id);
-    setTask(requiredTask);
-  }, [tasks]);
-
+function TaskEdit({ task }) {
   return (
     <div className="bg-gray-800">
       <Head>
@@ -33,12 +25,14 @@ function TaskEdit({ id }) {
 
 export default TaskEdit;
 
-export const getServerSideProps = (ctx) => {
-  const id = ctx.params.id;
+export async function getServerSideProps(ctx) {
+  const res = await axios.get(
+    `${process.env.BASE_URL}/api/tasks/${ctx.params.id}`
+  );
 
   return {
     props: {
-      id,
+      task: res.data.data.task,
     },
   };
-};
+}
