@@ -1,4 +1,5 @@
 import { Schema, model, models } from "mongoose";
+import User from "./UserModel";
 
 const taskSchema = new Schema(
   {
@@ -13,11 +14,19 @@ const taskSchema = new Schema(
       trim: true,
       maxLength: [200, "Description must be less than 200 chars"],
     },
+    creator: Array,
   },
   {
     timestamps: true,
     versionKey: false,
   }
 );
+
+taskSchema.pre("save", async function (next) {
+  this.creator = await Promise.all(
+    this.creator.map(async (id) => User.findById(id))
+  );
+  next();
+});
 
 export default models.Task || model("Task", taskSchema);
