@@ -14,7 +14,10 @@ const taskSchema = new Schema(
       trim: true,
       maxLength: [200, "Description must be less than 200 chars"],
     },
-    creator: Array,
+    creator: {
+      type: String,
+      require: [true, "You must provide a creator"],
+    },
   },
   {
     timestamps: true,
@@ -22,11 +25,11 @@ const taskSchema = new Schema(
   }
 );
 
-taskSchema.pre("save", async function (next) {
-  this.creator = await Promise.all(
-    this.creator.map(async (id) => User.findById(id))
-  );
-  next();
-});
+// taskSchema.pre("save", async function (next) {
+//   this.creator = await Promise.all(
+//     this.creator.map(async (id) => User.findById(id))
+//   );
+//   next();
+// });
 
 export default models.Task || model("Task", taskSchema);
