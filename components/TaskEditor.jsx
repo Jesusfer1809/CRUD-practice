@@ -7,10 +7,12 @@ import TasksContext from "../context/Tasks/TasksContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 function TaskEditor({ isEditing, prevTask }) {
   const { createTask, updateTask, tasks } = useContext(TasksContext);
   const router = useRouter();
+  const { data: session } = useSession();
 
   const [task, setTask] = useState({ title: "", description: "" });
 
@@ -106,7 +108,10 @@ function TaskEditor({ isEditing, prevTask }) {
           ></textarea>
         </fieldset>
 
-        <button className="w-full py-2 bg-teal-500 block rounded-sm">
+        <button
+          className="w-full py-2 bg-teal-500 block rounded-sm"
+          disabled={!session}
+        >
           Save
         </button>
       </form>

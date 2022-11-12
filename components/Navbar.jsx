@@ -1,17 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
+import { HiOutlineUserCircle } from "react-icons/hi";
+
 import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
+import axios from "axios";
+import UserDropdownMenu from "./UserDropdownMenu";
 
 function Navbar({ isInIndex }) {
   const router = useRouter();
   const { data: session } = useSession();
 
+  const [userOpen, setUserOpen] = useState(false);
+
+  const toggleUser = () => {
+    setUserOpen(!userOpen);
+  };
+
+  const changeImage = async () => {
+    const res = await axios.patch("http://localhost:3000/api/users", {
+      image: "https://i.imgur.com/vGJI9fL.png",
+    });
+    console.log(res);
+    router.reload();
+    // router.push("/newTask");
+  };
+
   return (
-    <div className="w-full px-4 py-6 bg-gray-900 text-white flex justify-between items-center border-b border-b-white">
+    <div className="w-full px-4 py-6 bg-gray-900 text-white flex justify-between items-center border-b border-b-white relative">
       <div>
         <Link href="/">
           <a>
@@ -19,45 +38,41 @@ function Navbar({ isInIndex }) {
           </a>
         </Link>
       </div>
+      <div className="flex space-x-4 xs:space-x-8 items-center sm:space-x-10">
+        {session ? (
+          <div className="flex items-center">
+            <HiOutlineUserCircle
+              onClick={toggleUser}
+              className="w-8 h-8 cursor-pointer"
+            />
+          </div>
+        ) : (
+          <div className="flex space-x-4 items-center">
+            Not signed in <br />
+            <button
+              className="px-4 py-2 bg-teal-500 rounded-md"
+              onClick={signIn}
+            >
+              Sign in
+            </button>
+          </div>
+        )}
 
-      {session ? (
-        <div className="flex space-x-4 items-center">
-          <span>
-            Signed in as {session.user.email} <br />
-          </span>
+        {isInIndex && (
+          <div>
+            <button
+              onClick={() => router.push("/newTask")}
+              disabled={!session}
+              className="flex items-center space-x-2 bg-teal-500 px-2 py-2 rounded-md font-medium"
+            >
+              <AiOutlinePlus />
+              <span>New Task</span>
+            </button>
+          </div>
+        )}
+      </div>
 
-          <Image src={session.user.image} width={100} height={100} />
-
-          <button
-            className="px-4 py-2 bg-teal-500 rounded-md"
-            onClick={() => signOut()}
-          >
-            Sign out
-          </button>
-        </div>
-      ) : (
-        <div className="flex space-x-4 items-center">
-          Not signed in <br />
-          <button
-            className="px-4 py-2 bg-teal-500 rounded-md"
-            onClick={() => signIn()}
-          >
-            Sign in
-          </button>
-        </div>
-      )}
-
-      {isInIndex && (
-        <div>
-          <button
-            onClick={() => router.push("/newTask")}
-            className="flex items-center space-x-2 bg-teal-500 px-2 py-2 rounded-md font-medium"
-          >
-            <AiOutlinePlus />
-            <span>New Task</span>
-          </button>
-        </div>
-      )}
+      <UserDropdownMenu userOpen={userOpen} />
     </div>
   );
 }

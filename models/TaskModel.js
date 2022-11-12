@@ -1,5 +1,4 @@
 import { Schema, model, models } from "mongoose";
-import User from "./UserModel";
 
 const taskSchema = new Schema(
   {

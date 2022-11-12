@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 import TasksContext from "../context/Tasks/TasksContext";
 import Layout from "../components/Layout";
@@ -11,11 +12,45 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import DeleteModal from "components/DeleteModal";
 
-const Home = ({ tasks }) => {
+import mongoose from "mongoose";
+
+const Home = () => {
+  const { data: session } = useSession();
+
+  console.log(mongoose.models);
+
   const [modal, setModal] = useState({
     id: undefined,
     isOpened: false,
   });
+
+  const [tasks, setTasks] = useState([]);
+
+  const fetchTasks = async () => {
+    const res = await axios.get(`http://localhost:3000/api/tasks`);
+
+    setTasks(res.data.data.tasks);
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const renderTasks = () => {
+    if (!session) {
+      return (
+        <h2 className="text-2xl">Please login to start creating tasks!</h2>
+      );
+    }
+
+    if (!tasks.length) {
+      return <h2 className="text-2xl">You don't have any tasks!!</h2>;
+    }
+
+    return tasks.map((task, index) => (
+      <TaskComponent task={task} index={index + 1} setModal={setModal} />
+    ));
+  };
 
   return (
     <div className="bg-gray-800 relative">
@@ -25,19 +60,7 @@ const Home = ({ tasks }) => {
       </Head>
 
       <Layout isInIndex={true}>
-        <div className="flex flex-col space-y-8">
-          {tasks.length > 0 ? (
-            tasks.map((task, index) => (
-              <TaskComponent
-                task={task}
-                index={index + 1}
-                setModal={setModal}
-              />
-            ))
-          ) : (
-            <h2 className="text-2xl">You don't have any tasks!!</h2>
-          )}
-        </div>
+        <div className="flex flex-col space-y-8">{renderTasks()}</div>
       </Layout>
       <Toaster position="top-right" reverseOrder={false} />
       <DeleteModal modalState={modal} setModal={setModal} />
@@ -46,13 +69,3 @@ const Home = ({ tasks }) => {
 };
 
 export default Home;
-
-export async function getServerSideProps() {
-  const res = await axios.get(`${process.env.BASE_URL}/api/tasks`);
-
-  return {
-    props: {
-      tasks: res.data.data.tasks,
-    },
-  };
-}
